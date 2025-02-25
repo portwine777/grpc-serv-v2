@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package file_service;
+
+option go_package = ".;file_service";
+
+// Сервис для работы с файлами
+service FileService {
+  // Загрузка файла
+  rpc UploadFile(stream UploadRequest) returns (UploadResponse);
+  // Получение списка файлов
+  rpc ListFiles(ListFilesRequest) returns (ListFilesResponse);
+  // Скачивание файла
+  rpc DownloadFile(DownloadRequest) returns (stream DownloadResponse);
+}
+
+
+
+// Запрос на загрузку файла
+message UploadRequest {
+  string filename = 1;
+  bytes chunk = 2;
+}
+
+// Ответ на загрузку файла
+message UploadResponse {
+  string message = 1;
+}
+
+// Запрос на получение списка файлов
+message ListFilesRequest {}
+
+// Ответ с списком файлов
+message ListFilesResponse {
+  repeated FileInfo files = 1;
+}
+
+// Информация о файле
+message FileInfo {
+  string filename = 1;
+  string created_at = 2;
+  string updated_at = 3;
+}
+
+// Запрос на скачивание файла
+message DownloadRequest {
+  string filename = 1;
+}
+
+// Ответ на скачивание файла
+message DownloadResponse {
+  bytes chunk = 1;
+}
